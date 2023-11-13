@@ -1,0 +1,15 @@
+{{- define "chatbot-ui.name" -}}
+{{- default "chatbot-ui" .Chart.Name -}}
+{{- end -}}
+
+{{- define "chatbot-ui.fullname" -}}
+{{- printf "%s-%s" .Release.Name (include "chatbot-ui.name" .) -}}
+{{- end -}}
+
+{{- if .Values.ingress.enabled -}}
+{{- include "ingress.yaml" . -}}
+{{- end -}}
+
+{{- include "deployment.yaml" . -}}
+{{- include "service.yaml" . -}}
+

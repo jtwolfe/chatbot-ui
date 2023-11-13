@@ -1,0 +1,23 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "chatbot-ui.fullname" . }}
+  labels:
+    app: {{ include "chatbot-ui.name" . }}
+  annotations:
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+spec:
+  rules:
+    - host: {{ (index .Values.ingress.hosts 0).host }}
+      http:
+        paths:
+          - path: {{ (index .Values.ingress.hosts 0).paths.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ (index .Values.ingress.hosts 0).paths.backend.serviceName }}
+                port:
+                  number: {{ (index .Values.ingress.hosts 0).paths.backend.servicePort }}
+{{- end -}}
+

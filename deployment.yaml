@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chatbot-ui.fullname" . }}
+  labels:
+    app: {{ include "chatbot-ui.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "chatbot-ui.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "chatbot-ui.name" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: OPENAI_API_KEY
+              value: {{ .Values.env.OPENAI_API_KEY }}
+            - name: OPENAI_API_HOST
+              value: {{ .Values.env.OPENAI_API_HOST }}
+            - name: OPENAI_API_TYPE
+              value: {{ .Values.env.OPENAI_API_TYPE }}
+            - name: OPENAI_API_VERSION
+              value: {{ .Values.env.OPENAI_API_VERSION }}
+            - name: AZURE_DEPLOYMENT_ID
+              value: {{ .Values.env.AZURE_DEPLOYMENT_ID }}
+            - name: OPENAI_ORGANIZATION
+              value: {{ .Values.env.OPENAI_ORGANIZATION }}
+            - name: DEFAULT_MODEL
+              value: {{ .Values.env.DEFAULT_MODEL }}
+            - name: NEXT_PUBLIC_DEFAULT_SYSTEM_PROMPT
+              value: {{ .Values.env.NEXT_PUBLIC_DEFAULT_SYSTEM_PROMPT }}
+            - name: NEXT_PUBLIC_DEFAULT_TEMPERATURE
+              value: {{ .Values.env.NEXT_PUBLIC_DEFAULT_TEMPERATURE }}
+            - name: GOOGLE_API_KEY
+              value: {{ .Values.env.GOOGLE_API_KEY }}
+            - name: GOOGLE_CSE_ID
+              value: {{ .Values.env.GOOGLE_CSE_ID }}
+

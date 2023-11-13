@@ -1,0 +1,34 @@
+image:
+  repository: ghcr.io/mckaywrigley/chatbot-ui
+  tag: main
+  pullPolicy: IfNotPresent
+
+service:
+  name: chatbot-ui
+  type: ClusterIP
+  port: 3000
+
+env:
+  OPENAI_API_KEY: "sx-000000" 
+  OPENAI_API_HOST: "https://api.openai.com"
+  OPENAI_API_TYPE: "openai"
+  OPENAI_API_VERSION: "2023-03-15-preview"
+  AZURE_DEPLOYMENT_ID: ""
+  OPENAI_ORGANIZATION: ""
+  DEFAULT_MODEL: "gpt-3.5-turbo"
+  NEXT_PUBLIC_DEFAULT_SYSTEM_PROMPT: "You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using markdown."
+  NEXT_PUBLIC_DEFAULT_TEMPERATURE: "1"
+  GOOGLE_API_KEY: ""
+  GOOGLE_CSE_ID: ""
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: chatbot-ui.example.com
+      paths:
+        - path: /
+          backend:
+            serviceName: chatbot-ui
+            servicePort: 3000
+
